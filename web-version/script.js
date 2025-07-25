@@ -113,6 +113,7 @@ function startTimer() {
             if (gameActive) {
                 document.getElementById('status').textContent = '⏰ Time\'s up!';
                 document.getElementById('status').className = 'wrong';
+                playLaughSound();
                 streak = 0;
                 resetGame();
             }
@@ -129,6 +130,7 @@ function continueGame() {
     if (next < 0) {
         document.getElementById('status').textContent = '❌ Wrong! Should have stopped';
         document.getElementById('status').className = 'wrong';
+        playLaughSound();
         streak = 0;
         resetGame();
     } else {
@@ -146,7 +148,7 @@ function checkAnswer() {
         document.getElementById('status').textContent = '💥 Oops! Should have continued';
         document.getElementById('status').className = 'wrong';
         createExplosion();
-        playSound('wrong');
+        playLaughSound();
         streak = 0;
     } else {
         const messages = ['🎉 Amazing!', '🌟 Perfect!', '🚀 Incredible!', '💎 Brilliant!', '🔥 On fire!'];
@@ -237,23 +239,66 @@ function playSound(type) {
     oscillator.stop(audioContext.currentTime + 0.3);
 }
 
+let buzzerAudioContext = null;
+
+function initBuzzerSound() {
+    buzzerAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+}
+
 function playBuzzerSound() {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    if (!buzzerAudioContext) {
+        initBuzzerSound();
+    }
+    
+    const oscillator = buzzerAudioContext.createOscillator();
+    const gainNode = buzzerAudioContext.createGain();
     
     oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    gainNode.connect(buzzerAudioContext.destination);
     
     oscillator.type = 'sawtooth';
-    oscillator.frequency.setValueAtTime(150, audioContext.currentTime);
-    oscillator.frequency.linearRampToValueAtTime(100, audioContext.currentTime + 0.3);
+    oscillator.frequency.setValueAtTime(150, buzzerAudioContext.currentTime);
+    oscillator.frequency.linearRampToValueAtTime(100, buzzerAudioContext.currentTime + 0.3);
     
-    gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    gainNode.gain.setValueAtTime(0.5, buzzerAudioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, buzzerAudioContext.currentTime + 0.3);
     
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.3);
+    oscillator.start();
+    oscillator.stop(buzzerAudioContext.currentTime + 0.3);
+}
+
+function playLaughSound() {
+    // Create laugh sound using speech synthesis
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance('ha ha ha ha ha');
+        utterance.rate = 2;
+        utterance.pitch = 1.5;
+        utterance.volume = 0.3;
+        speechSynthesis.speak(utterance);
+    } else {
+        // Fallback to generated laugh sound
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(400 + Math.random() * 200, audioContext.currentTime);
+                oscillator.frequency.linearRampToValueAtTime(300 + Math.random() * 100, audioContext.currentTime + 0.1);
+                
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            }, i * 100);
+        }
+    }
 }
 
 function updateCount() {
@@ -289,4 +334,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('startBtn').addEventListener('click', startGame);
     document.getElementById('continueBtn').addEventListener('click', continueGame);
     document.getElementById('doneBtn').addEventListener('click', checkAnswer);
+    
+    // Pre-initialize audio context on first user interaction
+    document.body.addEventListener('click', function() {
+        if (!buzzerAudioContext) {
+            initBuzzerSound();
+        }
+    }, { once: true });
 });
