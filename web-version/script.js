@@ -266,3 +266,10 @@ function playAudio(filename) {
     const audio = new Audio('audio/' + filename);
     audio.play().catch(e => console.log('Audio failed:', e));
 }
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('startBtn').addEventListener('click', startGame);
+    document.getElementById('continueBtn').addEventListener('click', continueGame);
+    document.getElementById('doneBtn').addEventListener('click', checkAnswer);
+});

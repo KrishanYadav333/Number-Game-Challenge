@@ -175,6 +175,29 @@ button:disabled {
     animation: buzzerPulse 0.6s infinite alternate;
 }
 
+#continueBtn:not(:disabled) {
+    animation: buzzerGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes buzzerGlow {
+    0% { 
+        box-shadow: 
+            0 0 0 8px rgba(255, 71, 87, 0.3),
+            0 0 0 16px rgba(255, 71, 87, 0.1),
+            0 8px 25px rgba(255, 71, 87, 0.4),
+            inset 0 4px 8px rgba(255, 255, 255, 0.3),
+            inset 0 -4px 8px rgba(0, 0, 0, 0.3);
+    }
+    100% { 
+        box-shadow: 
+            0 0 0 12px rgba(255, 71, 87, 0.5),
+            0 0 0 20px rgba(255, 71, 87, 0.2),
+            0 12px 30px rgba(255, 71, 87, 0.6),
+            inset 0 4px 8px rgba(255, 255, 255, 0.4),
+            inset 0 -4px 8px rgba(0, 0, 0, 0.4);
+    }
+}
+
 #continueBtn:active:not(:disabled) {
     transform: translate(-50%, -50%) translateY(-1px) scale(0.95);
     box-shadow: 
