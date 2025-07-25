@@ -37,6 +37,7 @@ function startGame() {
     
     document.getElementById('startBtn').disabled = true;
     document.getElementById('doneBtn').disabled = false;
+    document.getElementById('continueBtn').classList.add('game-active');
 }
 
 function startEasyGame() {
@@ -320,6 +321,7 @@ function resetGame() {
     setTimeout(() => {
         document.getElementById('startBtn').disabled = false;
         document.getElementById('doneBtn').disabled = true;
+        document.getElementById('continueBtn').classList.remove('game-active');
         document.getElementById('timer').textContent = '';
         document.getElementById('timer').classList.remove('timer-warning');
         document.getElementById('status').textContent = '🎵 Click Start to begin';
