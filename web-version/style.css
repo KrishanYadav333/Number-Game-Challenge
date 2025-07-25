@@ -92,6 +92,7 @@ select option { background: #764ba2; }
 #status {
     font-size: 24px;
     margin-bottom: 40px;
+    margin-top: -50px;
     font-weight: 600;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     transition: all 0.3s ease;
@@ -130,6 +131,7 @@ button:disabled {
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+    pointer-events: none;
 }
 
 #startBtn {
@@ -154,7 +156,7 @@ button:disabled {
         inset 0 -4px 8px rgba(0, 0, 0, 0.3);
     border: 6px solid #ff3742;
     position: absolute;
-    top: 70%;
+    top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
@@ -175,7 +177,27 @@ button:disabled {
     animation: buzzerPulse 0.6s infinite alternate;
 }
 
+#continueBtn:active:not(:disabled) {
+    transform: translate(-50%, -50%) translateY(-1px) scale(0.95);
+    box-shadow: 
+        0 0 0 4px rgba(255, 71, 87, 0.5),
+        0 0 0 8px rgba(255, 71, 87, 0.3),
+        0 4px 15px rgba(255, 71, 87, 0.8),
+        inset 0 2px 4px rgba(0, 0, 0, 0.5),
+        inset 0 -2px 4px rgba(255, 255, 255, 0.2);
+}
+
+#continueBtn:disabled {
+    background: rgba(255,255,255,0.1);
+    border: 6px solid rgba(255,255,255,0.2);
+    transform: translate(-50%, -50%);
+    box-shadow: none;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 #continueBtn:not(:disabled) {
+    pointer-events: auto;
     animation: buzzerGlow 2s ease-in-out infinite alternate;
 }
 
@@ -196,24 +218,6 @@ button:disabled {
             inset 0 4px 8px rgba(255, 255, 255, 0.4),
             inset 0 -4px 8px rgba(0, 0, 0, 0.4);
     }
-}
-
-#continueBtn:active:not(:disabled) {
-    transform: translate(-50%, -50%) translateY(-1px) scale(0.95);
-    box-shadow: 
-        0 0 0 4px rgba(255, 71, 87, 0.5),
-        0 0 0 8px rgba(255, 71, 87, 0.3),
-        0 4px 15px rgba(255, 71, 87, 0.8),
-        inset 0 2px 4px rgba(0, 0, 0, 0.5),
-        inset 0 -2px 4px rgba(255, 255, 255, 0.2);
-}
-
-#continueBtn:disabled {
-    background: rgba(255,255,255,0.1);
-    border: 6px solid rgba(255,255,255,0.2);
-    transform: translate(-50%, -50%);
-    box-shadow: none;
-    cursor: not-allowed;
 }
 
 @keyframes buzzerPulse {

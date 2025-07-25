@@ -123,6 +123,8 @@ function startTimer() {
 function continueGame() {
     if (!gameActive) return;
     
+    playBuzzerSound();
+    
     next--;
     if (next < 0) {
         document.getElementById('status').textContent = '❌ Wrong! Should have stopped';
@@ -181,7 +183,6 @@ function createCelebration() {
         }, i * 200);
     }
     
-    // Confetti particles
     for (let i = 0; i < 20; i++) {
         setTimeout(() => {
             const particle = document.createElement('div');
@@ -221,9 +222,9 @@ function playSound(type) {
     gainNode.connect(audioContext.destination);
     
     if (type === 'correct') {
-        oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-        oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-        oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+        oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+        oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+        oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
     } else {
         oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
         oscillator.frequency.setValueAtTime(150, audioContext.currentTime + 0.1);
@@ -236,9 +237,26 @@ function playSound(type) {
     oscillator.stop(audioContext.currentTime + 0.3);
 }
 
-function updateCount() {
-    document.getElementById('count').textContent = '';
+function playBuzzerSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
     
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.type = 'sawtooth';
+    oscillator.frequency.setValueAtTime(150, audioContext.currentTime);
+    oscillator.frequency.linearRampToValueAtTime(100, audioContext.currentTime + 0.3);
+    
+    gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
+}
+
+function updateCount() {
     if (streak > 0) {
         const streakEmojis = ['🔥', '⚡', '💥', '🌟', '🚀'];
         const emoji = streakEmojis[Math.min(streak - 1, 4)];
@@ -254,7 +272,6 @@ function resetGame() {
         document.getElementById('startBtn').disabled = false;
         document.getElementById('continueBtn').disabled = true;
         document.getElementById('doneBtn').disabled = true;
-        document.getElementById('count').textContent = '';
         document.getElementById('timer').textContent = '';
         document.getElementById('timer').classList.remove('timer-warning');
         document.getElementById('status').textContent = '🎵 Click Start to begin';
@@ -267,7 +284,7 @@ function playAudio(filename) {
     audio.play().catch(e => console.log('Audio failed:', e));
 }
 
-// Event listeners
+// Initialize event listeners when page loads
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('startBtn').addEventListener('click', startGame);
     document.getElementById('continueBtn').addEventListener('click', continueGame);
