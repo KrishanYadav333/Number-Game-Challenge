@@ -30,7 +30,7 @@ Play the game: [Audio Number Challenge](https://KrishanYadav333.github.io/Number
 git clone https://github.com/KrishanYadav333/Number-Game-Challenge.git
 
 # Navigate to project directory
-cd audio-number-challenge
+cd Number-Game-Challenge
 
 # Start local server
 npm start
@@ -39,11 +39,12 @@ npm start
 ## 📁 Project Structure
 
 ```
-audio-number-challenge/
+Number-Game-Challenge/
 ├── index.html          # Main game interface
 ├── style.css           # Game styling and animations
 ├── script.js           # Game logic and interactions
 ├── audio/              # Audio files for numbers
+├── package.json        # NPM configuration
 ├── LICENSE             # MIT License
 └── README.md           # This file
 ```
