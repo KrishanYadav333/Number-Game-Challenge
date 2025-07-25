@@ -36,7 +36,6 @@ function startGame() {
     updateCount();
     
     document.getElementById('startBtn').disabled = true;
-    document.getElementById('continueBtn').disabled = false;
     document.getElementById('doneBtn').disabled = false;
 }
 
@@ -302,6 +301,11 @@ function playLaughSound() {
 }
 
 function updateCount() {
+    const level = document.getElementById('level').value;
+    if (level === 'expert' && next > 0) {
+        document.getElementById('status').textContent = `🎯 ${next} more clicks needed`;
+    }
+    
     if (streak > 0) {
         const streakEmojis = ['🔥', '⚡', '💥', '🌟', '🚀'];
         const emoji = streakEmojis[Math.min(streak - 1, 4)];
@@ -315,7 +319,6 @@ function resetGame() {
     
     setTimeout(() => {
         document.getElementById('startBtn').disabled = false;
-        document.getElementById('continueBtn').disabled = true;
         document.getElementById('doneBtn').disabled = true;
         document.getElementById('timer').textContent = '';
         document.getElementById('timer').classList.remove('timer-warning');

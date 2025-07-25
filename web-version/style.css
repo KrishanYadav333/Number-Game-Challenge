@@ -139,52 +139,53 @@ button:disabled {
 }
 
 #continueBtn {
-    background: radial-gradient(circle at 30% 30%, #ff6b6b, #ff4757, #c44569);
-    width: 120px;
-    height: 120px;
+    background: linear-gradient(145deg, #ff4757 0%, #c44569 50%, #8b2635 100%);
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    font-size: 32px;
+    font-size: 24px;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 
-        0 0 0 8px rgba(255, 71, 87, 0.3),
-        0 0 0 16px rgba(255, 71, 87, 0.1),
-        0 8px 25px rgba(255, 71, 87, 0.4),
-        inset 0 4px 8px rgba(255, 255, 255, 0.3),
-        inset 0 -4px 8px rgba(0, 0, 0, 0.3);
-    border: 6px solid #ff3742;
+        0 0 0 8px #b91828,
+        0 0 0 12px #8b1538,
+        0 15px 30px rgba(0, 0, 0, 0.4),
+        inset 0 8px 16px rgba(255, 255, 255, 0.3),
+        inset 0 -8px 16px rgba(0, 0, 0, 0.4);
+    border: 8px solid #8b1538;
     position: absolute;
     top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
     cursor: pointer;
-    transition: all 0.2s ease;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: all 0.15s ease;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
+    font-weight: bold;
 }
 
 #continueBtn:hover:not(:disabled) {
-    background: radial-gradient(circle at 30% 30%, #ff5252, #ff3742, #b33951);
-    transform: translate(-50%, -50%) translateY(-4px) scale(1.05);
+    background: linear-gradient(145deg, #ff3742 0%, #b33951 50%, #7a1f2e 100%);
+    transform: translate(-50%, -50%) translateY(-6px) scale(1.03);
     box-shadow: 
-        0 0 0 8px rgba(255, 71, 87, 0.4),
-        0 0 0 16px rgba(255, 71, 87, 0.2),
-        0 12px 35px rgba(255, 71, 87, 0.6),
-        inset 0 4px 8px rgba(255, 255, 255, 0.4),
-        inset 0 -4px 8px rgba(0, 0, 0, 0.4);
-    animation: buzzerPulse 0.6s infinite alternate;
+        0 0 0 8px #a01525,
+        0 0 0 12px #7a1f2e,
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        inset 0 8px 16px rgba(255, 255, 255, 0.4),
+        inset 0 -8px 16px rgba(0, 0, 0, 0.5);
+    animation: buzzer3DPulse 0.8s infinite alternate;
 }
 
 #continueBtn:active:not(:disabled) {
-    transform: translate(-50%, -50%) translateY(-1px) scale(0.95);
+    transform: translate(-50%, -50%) translateY(2px) scale(0.97);
     box-shadow: 
-        0 0 0 4px rgba(255, 71, 87, 0.5),
-        0 0 0 8px rgba(255, 71, 87, 0.3),
-        0 4px 15px rgba(255, 71, 87, 0.8),
-        inset 0 2px 4px rgba(0, 0, 0, 0.5),
-        inset 0 -2px 4px rgba(255, 255, 255, 0.2);
+        0 0 0 6px #8b1538,
+        0 0 0 10px #6b1028,
+        0 8px 20px rgba(0, 0, 0, 0.6),
+        inset 0 4px 8px rgba(0, 0, 0, 0.6),
+        inset 0 -4px 8px rgba(255, 255, 255, 0.1);
 }
 
 #continueBtn:disabled {
@@ -196,43 +197,46 @@ button:disabled {
     pointer-events: none;
 }
 
-#continueBtn:not(:disabled) {
-    pointer-events: auto;
-    animation: buzzerGlow 2s ease-in-out infinite alternate;
+#continueBtn.game-active {
+    animation: buzzer3DGlow 2.5s ease-in-out infinite alternate;
 }
 
-@keyframes buzzerGlow {
+@keyframes buzzer3DGlow {
     0% { 
         box-shadow: 
-            0 0 0 8px rgba(255, 71, 87, 0.3),
-            0 0 0 16px rgba(255, 71, 87, 0.1),
-            0 8px 25px rgba(255, 71, 87, 0.4),
-            inset 0 4px 8px rgba(255, 255, 255, 0.3),
-            inset 0 -4px 8px rgba(0, 0, 0, 0.3);
+            0 0 0 8px #b91828,
+            0 0 0 12px #8b1538,
+            0 15px 30px rgba(0, 0, 0, 0.4),
+            inset 0 8px 16px rgba(255, 255, 255, 0.3),
+            inset 0 -8px 16px rgba(0, 0, 0, 0.4);
     }
     100% { 
         box-shadow: 
-            0 0 0 12px rgba(255, 71, 87, 0.5),
-            0 0 0 20px rgba(255, 71, 87, 0.2),
-            0 12px 30px rgba(255, 71, 87, 0.6),
-            inset 0 4px 8px rgba(255, 255, 255, 0.4),
-            inset 0 -4px 8px rgba(0, 0, 0, 0.4);
+            0 0 0 10px #d41f2f,
+            0 0 0 16px #a01525,
+            0 20px 40px rgba(0, 0, 0, 0.5),
+            inset 0 8px 16px rgba(255, 255, 255, 0.4),
+            inset 0 -8px 16px rgba(0, 0, 0, 0.5);
     }
 }
 
-@keyframes buzzerPulse {
-    0% { box-shadow: 
-        0 0 0 8px rgba(255, 71, 87, 0.4),
-        0 0 0 16px rgba(255, 71, 87, 0.2),
-        0 12px 35px rgba(255, 71, 87, 0.6),
-        inset 0 4px 8px rgba(255, 255, 255, 0.4),
-        inset 0 -4px 8px rgba(0, 0, 0, 0.4); }
-    100% { box-shadow: 
-        0 0 0 12px rgba(255, 71, 87, 0.6),
-        0 0 0 24px rgba(255, 71, 87, 0.3),
-        0 16px 40px rgba(255, 71, 87, 0.8),
-        inset 0 4px 8px rgba(255, 255, 255, 0.5),
-        inset 0 -4px 8px rgba(0, 0, 0, 0.5); }
+@keyframes buzzer3DPulse {
+    0% { 
+        box-shadow: 
+            0 0 0 8px #a01525,
+            0 0 0 12px #7a1f2e,
+            0 20px 40px rgba(0, 0, 0, 0.5),
+            inset 0 8px 16px rgba(255, 255, 255, 0.4),
+            inset 0 -8px 16px rgba(0, 0, 0, 0.5);
+    }
+    100% { 
+        box-shadow: 
+            0 0 0 12px #d41f2f,
+            0 0 0 18px #a01525,
+            0 25px 50px rgba(0, 0, 0, 0.6),
+            inset 0 8px 16px rgba(255, 255, 255, 0.5),
+            inset 0 -8px 16px rgba(0, 0, 0, 0.6);
+    }
 }
 
 #doneBtn {
