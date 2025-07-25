@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🎯 Audio Number Challenge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.07);
+            max-width: 600px;
+            width: 95%;
+            min-height: 500px;
+            text-align: center;
+            border: 2px solid rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: titleBounce 2s ease-in-out infinite alternate;
+        }
+        @keyframes titleBounce {
+            0% { transform: scale(1) rotate(-1deg); }
+            100% { transform: scale(1.05) rotate(1deg); }
+        }
+        .level-selector {
+            margin-bottom: 60px;
+        }
+        select {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+        select option { background: #764ba2; }
+        .game-area {
+            margin: 80px 0;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            position: relative;
+        }
+        #status {
+            font-size: 24px;
+            margin-bottom: 40px;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        #count {
+            font-size: 20px;
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 60px;
+        }
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            min-width: 100px;
+        }
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        button:disabled {
+            background: rgba(255,255,255,0.1);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        #startBtn {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+        #continueBtn {
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #ff4757, #c44569);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            font-size: 32px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 0 0 8px rgba(255, 71, 87, 0.3),
+                0 0 0 16px rgba(255, 71, 87, 0.1),
+                0 8px 25px rgba(255, 71, 87, 0.4),
+                inset 0 4px 8px rgba(255, 255, 255, 0.3),
+                inset 0 -4px 8px rgba(0, 0, 0, 0.3);
+            border: 6px solid #ff3742;
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        #continueBtn:hover:not(:disabled) {
+            background: radial-gradient(circle at 30% 30%, #ff5252, #ff3742, #b33951);
+            transform: translate(-50%, -50%) translateY(-4px) scale(1.05);
+            box-shadow: 
+                0 0 0 8px rgba(255, 71, 87, 0.4),
+                0 0 0 16px rgba(255, 71, 87, 0.2),
+                0 12px 35px rgba(255, 71, 87, 0.6),
+                inset 0 4px 8px rgba(255, 255, 255, 0.4),
+                inset 0 -4px 8px rgba(0, 0, 0, 0.4);
+            animation: buzzerPulse 0.6s infinite alternate;
+        }
+        #continueBtn:active:not(:disabled) {
+            transform: translate(-50%, -50%) translateY(-1px) scale(0.95);
+            box-shadow: 
+                0 0 0 4px rgba(255, 71, 87, 0.5),
+                0 0 0 8px rgba(255, 71, 87, 0.3),
+                0 4px 15px rgba(255, 71, 87, 0.8),
+                inset 0 2px 4px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 4px rgba(255, 255, 255, 0.2);
+        }
+        #continueBtn:disabled {
+            background: rgba(255,255,255,0.1);
+            border: 6px solid rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+        @keyframes buzzerPulse {
+            0% { box-shadow: 
+                0 0 0 8px rgba(255, 71, 87, 0.4),
+                0 0 0 16px rgba(255, 71, 87, 0.2),
+                0 12px 35px rgba(255, 71, 87, 0.6),
+                inset 0 4px 8px rgba(255, 255, 255, 0.4),
+                inset 0 -4px 8px rgba(0, 0, 0, 0.4); }
+            100% { box-shadow: 
+                0 0 0 12px rgba(255, 71, 87, 0.6),
+                0 0 0 24px rgba(255, 71, 87, 0.3),
+                0 16px 40px rgba(255, 71, 87, 0.8),
+                inset 0 4px 8px rgba(255, 255, 255, 0.5),
+                inset 0 -4px 8px rgba(0, 0, 0, 0.5); }
+        }
+        #doneBtn {
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            color: #333;
+        }
+        .correct {
+            color: #00ff88 !important;
+            animation: celebration 1s ease-in-out;
+        }
+        .wrong {
+            color: #ff4757 !important;
+            animation: explosion 0.8s ease-in-out;
+        }
+        @keyframes celebration {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(5deg); }
+            50% { transform: scale(1.3) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(3deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        @keyframes explosion {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.1) rotate(2deg); }
+            40% { transform: scale(0.9) rotate(-2deg); }
+            60% { transform: scale(1.05) rotate(1deg); }
+            80% { transform: scale(0.95) rotate(-1deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .audio-indicator {
+            display: inline-block;
+            margin-left: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .audio-playing {
+            opacity: 1;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .score {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        #timer {
+            font-size: 18px;
+            color: #ff6b6b;
+            margin: 10px 0;
+        }
+        #streak {
+            font-size: 16px;
+            color: #4ecdc4;
+            margin: 5px 0;
+        }
+        .timer-warning {
+            animation: blink 0.5s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+        .floating-emoji {
+            position: fixed;
+            font-size: 30px;
+            pointer-events: none;
+            z-index: 1000;
+            animation: float 3s ease-out forwards;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-200px) rotate(360deg); opacity: 0; }
+        }
+        .particle {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: #ffd700;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999;
+            animation: particle 2s ease-out forwards;
+        }
+        @keyframes particle {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0) translateY(-100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="score">🏆 <span id="score">0</span></div>
+    <div class="container">
+        <h1>🎯 Audio Challenge</h1>
+        
+        <div class="level-selector">
+            <label>🎮 Level: </label>
+            <select id="level">
+                <option value="easy">🟢 Easy (Single Audio)</option>
+                <option value="medium">🟡 Medium (Math Operations)</option>
+                <option value="hard">🔴 Hard (Multiple Audio)</option>
+                <option value="expert">⚫ Expert (Reverse Logic)</option>
+            </select>
+        </div>
+        
+        <div class="game-area">
+            <div id="status">🎵 Click Start to begin</div>
+            <div id="count"></div>
+            <div id="timer"></div>
+            <div id="streak"></div>
+            <span class="audio-indicator" id="audioIndicator">🔊</span>
+        </div>
+        
+        <button id="continueBtn" onclick="continueGame()" disabled>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+                <div style="font-size: 28px;">🚨</div>
+                <div style="font-size: 10px; font-weight: bold; letter-spacing: 1px;">BUZZ</div>
+            </div>
+        </button>
+        
+        <div class="buttons">
+            <button id="startBtn" onclick="startGame()">🚀 Start</button>
+            <button id="doneBtn" onclick="checkAnswer()" disabled>✅ Done</button>
+        </div>
+
+    </div>
+
+    <script>
+        let next = 0;
+        let score = 0;
+        let streak = 0;
+        let timeLeft = 0;
+        let timerInterval = null;
+        let gameActive = false;
+        const audioFiles = ['one.wav', 'two.wav', 'three.wav', 'four.wav', 'five.wav', 
+                           'six.wav', 'seven.wav', 'eight.wav', 'nine.wav', 'ten.wav'];
+
+        function startGame() {
+            const level = document.getElementById('level').value;
+            gameActive = true;
+            
+            switch(level) {
+                case 'easy':
+                    startEasyGame();
+                    timeLeft = 15;
+                    break;
+                case 'medium':
+                    startMediumGame();
+                    timeLeft = 12;
+                    break;
+                case 'hard':
+                    startHardGame();
+                    timeLeft = 10;
+                    break;
+                case 'expert':
+                    startExpertGame();
+                    timeLeft = 8;
+                    break;
+            }
+            
+            startTimer();
+            document.getElementById('status').textContent = '🤔 Make your choice';
+            document.getElementById('status').className = '';
+            updateCount();
+            
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('continueBtn').disabled = false;
+            document.getElementById('doneBtn').disabled = false;
+        }
+
+        function startEasyGame() {
+            const ran = Math.floor(Math.random() * 55);
+            if (ran < 10) next = 1;
+            else if (ran < 19) next = 2;
+            else if (ran < 27) next = 3;
+            else if (ran < 34) next = 4;
+            else if (ran < 40) next = 5;
+            else if (ran < 45) next = 6;
+            else if (ran < 49) next = 7;
+            else if (ran < 52) next = 8;
+            else if (ran < 54) next = 9;
+            else next = 10;
+            
+            playAudio(audioFiles[next - 1]);
+        }
+
+        function startMediumGame() {
+            const num1 = Math.floor(Math.random() * 5) + 1;
+            const num2 = Math.floor(Math.random() * 5) + 1;
+            const operation = Math.random() > 0.5 ? '+' : '-';
+            
+            if (operation === '+') {
+                next = num1 + num2;
+                playAudio(audioFiles[num1 - 1]);
+                setTimeout(() => playAudio(audioFiles[num2 - 1]), 1500);
+                document.getElementById('status').textContent = `🧮 ${num1} + ${num2} = ?`;
+            } else {
+                next = Math.max(0, num1 - num2);
+                playAudio(audioFiles[num1 - 1]);
+                setTimeout(() => playAudio(audioFiles[num2 - 1]), 1500);
+                document.getElementById('status').textContent = `🧮 ${num1} - ${num2} = ?`;
+            }
+        }
+
+        function startHardGame() {
+            const count = Math.floor(Math.random() * 3) + 2;
+            let total = 0;
+            
+            for (let i = 0; i < count; i++) {
+                const num = Math.floor(Math.random() * 5) + 1;
+                total += num;
+                setTimeout(() => playAudio(audioFiles[num - 1]), i * 1200);
+            }
+            
+            next = total;
+            document.getElementById('status').textContent = `🎵 Add all numbers you hear`;
+        }
+
+        function startExpertGame() {
+            const target = Math.floor(Math.random() * 8) + 3;
+            const current = Math.floor(Math.random() * 5) + 1;
+            next = target - current;
+            
+            playAudio(audioFiles[current - 1]);
+            document.getElementById('status').textContent = `🎯 How many MORE to reach ${target}?`;
+        }
+
+        function startTimer() {
+            document.getElementById('timer').textContent = `⏱️ ${timeLeft}s`;
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = `⏱️ ${timeLeft}s`;
+                
+                if (timeLeft <= 3) {
+                    document.getElementById('timer').classList.add('timer-warning');
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    if (gameActive) {
+                        document.getElementById('status').textContent = '⏰ Time\'s up!';
+                        document.getElementById('status').className = 'wrong';
+                        streak = 0;
+                        resetGame();
+                    }
+                }
+            }, 1000);
+        }
+
+        function continueGame() {
+            if (!gameActive) return;
+            
+            next--;
+            if (next < 0) {
+                document.getElementById('status').textContent = '❌ Wrong! Should have stopped';
+                document.getElementById('status').className = 'wrong';
+                streak = 0;
+                resetGame();
+            } else {
+                updateCount();
+            }
+        }
+
+        function checkAnswer() {
+            if (!gameActive) return;
+            
+            gameActive = false;
+            clearInterval(timerInterval);
+            
+            if (next > 0) {
+                document.getElementById('status').textContent = '💥 Oops! Should have continued';
+                document.getElementById('status').className = 'wrong';
+                createExplosion();
+                playSound('wrong');
+                streak = 0;
+            } else {
+                const messages = ['🎉 Amazing!', '🌟 Perfect!', '🚀 Incredible!', '💎 Brilliant!', '🔥 On fire!'];
+                document.getElementById('status').textContent = messages[Math.floor(Math.random() * messages.length)];
+                document.getElementById('status').className = 'correct';
+                createCelebration();
+                playSound('correct');
+                streak++;
+                const bonus = streak > 1 ? streak * 5 : 0;
+                score += 10 + bonus + timeLeft;
+                document.getElementById('score').textContent = score;
+                
+                if (streak === 5) {
+                    setTimeout(() => {
+                        alert('🎊 STREAK MASTER! 5 in a row! 🎊');
+                    }, 1000);
+                }
+            }
+            resetGame();
+        }
+        
+        function createCelebration() {
+            const emojis = ['🎉', '🌟', '✨', '🎊', '💫', '🎈', '🎁', '🏆'];
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'floating-emoji';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = Math.random() * window.innerWidth + 'px';
+                    emoji.style.top = window.innerHeight + 'px';
+                    document.body.appendChild(emoji);
+                    
+                    setTimeout(() => emoji.remove(), 3000);
+                }, i * 200);
+            }
+            
+            // Confetti particles
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = (window.innerWidth / 2 + (Math.random() - 0.5) * 200) + 'px';
+                    particle.style.top = (window.innerHeight / 2) + 'px';
+                    particle.style.background = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#feca57', '#ff9ff3'][Math.floor(Math.random() * 5)];
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 2000);
+                }, i * 50);
+            }
+        }
+        
+        function createExplosion() {
+            const sadEmojis = ['💥', '😵', '🤯', '😱', '💔'];
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'floating-emoji';
+                    emoji.textContent = sadEmojis[Math.floor(Math.random() * sadEmojis.length)];
+                    emoji.style.left = (window.innerWidth / 2 + (Math.random() - 0.5) * 100) + 'px';
+                    emoji.style.top = (window.innerHeight / 2) + 'px';
+                    document.body.appendChild(emoji);
+                    
+                    setTimeout(() => emoji.remove(), 3000);
+                }, i * 100);
+            }
+        }
+        
+        function playSound(type) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            if (type === 'correct') {
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+            } else {
+                oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(150, audioContext.currentTime + 0.1);
+            }
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+
+        function updateCount() {
+            document.getElementById('count').textContent = '';
+            
+            if (streak > 0) {
+                const streakEmojis = ['🔥', '⚡', '💥', '🌟', '🚀'];
+                const emoji = streakEmojis[Math.min(streak - 1, 4)];
+                document.getElementById('streak').textContent = `${emoji} Streak: ${streak}x`;
+            }
+        }
+
+        function resetGame() {
+            gameActive = false;
+            clearInterval(timerInterval);
+            
+            setTimeout(() => {
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('continueBtn').disabled = true;
+                document.getElementById('doneBtn').disabled = true;
+                document.getElementById('count').textContent = '';
+                document.getElementById('timer').textContent = '';
+                document.getElementById('timer').classList.remove('timer-warning');
+                document.getElementById('status').textContent = '🎵 Click Start to begin';
+                document.getElementById('status').className = '';
+            }, 2500);
+        }
+
+        function playAudio(filename) {
+            const audio = new Audio('audio/' + filename);
+            const indicator = document.getElementById('audioIndicator');
+            
+            indicator.classList.add('audio-playing');
+            audio.play().catch(e => console.log('Audio failed:', e));
+            
+            audio.onended = () => {
+                indicator.classList.remove('audio-playing');
+            };
+        }
+    </script>
+</body>
+</html>
