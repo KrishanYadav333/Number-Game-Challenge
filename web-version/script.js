@@ -1,3 +1,9 @@
+/*
+ * Audio Number Challenge Game
+ * Copyright (c) 2024-${new Date().getFullYear()} Krishan. All rights reserved.
+ * Licensed under MIT License - see LICENSE file for details
+ */
+
 let next = 0;
 let score = 0;
 let streak = 0;

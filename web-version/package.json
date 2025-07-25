@@ -1,0 +1,13 @@
+{
+  "name": "audio-number-challenge",
+  "version": "1.0.0",
+  "description": "Interactive audio-based number challenge game",
+  "main": "index.html",
+  "scripts": {
+    "update-copyright": "node update-copyright.js",
+    "start": "python -m http.server 8000"
+  },
+  "author": "Krishan",
+  "license": "MIT",
+  "keywords": ["game", "audio", "challenge", "buzzer", "interactive"]
+}
