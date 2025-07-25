@@ -13,7 +13,7 @@ An interactive audio-based number challenge game with a professional game show i
 
 ## 🚀 Live Demo
 
-Play the game: [Audio Number Challenge](https://your-usernameKrishanYadav333.github.io/audio-number-challenge)
+Play the game: [Audio Number Challenge](https://KrishanYadav333.github.io/Number-Game-Challenge)
 
 ## 🎯 How to Play
 
@@ -27,7 +27,7 @@ Play the game: [Audio Number Challenge](https://your-usernameKrishanYadav333.git
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/audio-number-challenge.git
+git clone https://github.com/KrishanYadav333/Number-Game-Challenge.git
 
 # Navigate to project directory
 cd audio-number-challenge
