@@ -128,23 +128,40 @@ select:focus {
 }
 
 select option { 
-    background: rgba(0,0,0,0.8);
-    color: white;
+    background: rgba(0,0,0,0.9) !important;
+    background-color: rgba(0,0,0,0.9) !important;
+    color: white !important;
     padding: 10px 15px;
     border: none;
     font-weight: 500;
 }
 
 select option:hover {
-    background: rgba(255,255,255,0.15);
-    color: white;
+    background: rgba(255,255,255,0.15) !important;
+    background-color: rgba(255,255,255,0.15) !important;
+    color: white !important;
 }
 
 select option:checked,
 select option:focus {
-    background: rgba(100,200,255,0.3);
-    color: white;
+    background: rgba(100,200,255,0.3) !important;
+    background-color: rgba(100,200,255,0.3) !important;
+    color: white !important;
     font-weight: 600;
+}
+
+/* Additional browser-specific overrides */
+select optgroup {
+    background: rgba(0,0,0,0.9) !important;
+    color: white !important;
+}
+
+select::-webkit-scrollbar {
+    background: rgba(0,0,0,0.8);
+}
+
+select::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.8);
 }
 
 .game-area {
